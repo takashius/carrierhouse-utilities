@@ -5,6 +5,7 @@ import { Box, Heading, ScrollView, Stack, Text } from 'native-base';
 import { InputForm, SelectDropdownForm } from '@/components/Form';
 import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
+import RenderInputText from '@/components/RenderInputText';
 
 export default function TabOneScreen() {
   const responseQuery = useGetForm(160);
@@ -16,51 +17,6 @@ export default function TabOneScreen() {
       setFullData(responseQuery.data);
     }
   }, [responseQuery.isSuccess])
-
-  const renderInputText = (item: any) => {
-    switch (item.type) {
-      case 1:
-      case 5:
-        if (item.visibility != 3)
-          return (
-            <Stack space={2} pb="2">
-              <InputForm
-                data={{
-                  name: item.name,
-                  title: item.description,
-                  placeholder: item.description,
-                  keyboardType: item.type == 1 ? "default" : "number-pad",
-                  value: item.type == 1 ? item.stringValue : item.intValue,
-                  formData,
-                  setData,
-                  require: !item.nullable,
-                }}
-              />
-            </Stack>
-          )
-        break;
-      case 8:
-      case 9:
-        let sortedValues = item.values.sort((p1: any, p2: any) =>
-          p1.code > p2.code ? 1 : p1.code < p2.code ? -1 : 0
-        );
-        if (item.visibility != 3)
-          return (<Stack space={2} pb="2">
-            <SelectDropdownForm
-              data={{
-                name: "master",
-                selectData: sortedValues,
-                search: false,
-                title: item.description,
-                placeholder: item.description,
-                value: item.type == 8 ? item.stringValue : item.intValue,
-                require: true,
-                formData,
-                setData
-              }} />
-          </Stack>)
-    }
-  }
 
   return (
     <Box bg="white" safeArea flex="1" p="2">
@@ -74,7 +30,7 @@ export default function TabOneScreen() {
           <ScrollView marginBottom={6}>
             {fullData?.declarations
               .sort((a: any, b: any) => a.sequence - b.sequence)
-              .map((item: any) => renderInputText(item))}
+              .map((item: any) => RenderInputText(item, formData, setData))}
           </ScrollView>
         </KeyboardAvoidingView>
       }
