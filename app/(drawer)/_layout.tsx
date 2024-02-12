@@ -25,6 +25,7 @@ export default function Layout() {
       <Drawer.Screen
         name="home"
         options={{
+          headerShown: false,
           drawerLabel: 'Home',
           title: 'Home',
           drawerActiveTintColor: "white",
@@ -41,6 +42,7 @@ export default function Layout() {
       <Drawer.Screen
         name="mascotas"
         options={{
+          headerShown: false,
           drawerLabel: 'Mascotas',
           title: 'Mascotas',
           drawerActiveTintColor: "white",
