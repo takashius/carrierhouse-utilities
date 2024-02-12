@@ -5,6 +5,11 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { NativeBaseProvider } from "native-base";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { I18nextProvider } from "react-i18next";
+import i18next from "i18next";
+import common_en from "@/translation/en.json";
+import common_es from "@/translation/es.json";
 
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -38,6 +43,18 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
+  i18next.init({
+    lng: 'es',
+    resources: {
+      en: { translation: common_en },
+      es: { translation: common_es },
+    },
+    compatibilityJSON: "v3",
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
   if (!loaded) {
     return null;
   }
@@ -47,13 +64,18 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const queryClient = new QueryClient();
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <NativeBaseProvider>
-        <Stack>
-          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-        </Stack>
+        <I18nextProvider i18n={i18next}>
+          <QueryClientProvider client={queryClient}>
+            <Stack>
+              <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+            </Stack>
+          </QueryClientProvider>
+        </I18nextProvider>
       </NativeBaseProvider>
     </ThemeProvider>
   );

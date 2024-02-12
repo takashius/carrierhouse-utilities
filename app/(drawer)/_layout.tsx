@@ -13,10 +13,10 @@ export default function Layout() {
           flex: 1,
           width: "70%",
           borderRightWidth: 0,
-          backgroundColor: "#1d68b5",
+          backgroundColor: "#9333ea",
         },
         headerStyle: {
-          backgroundColor: "#2196F3",
+          backgroundColor: "#9333ea",
         },
         headerTintColor: "white",
       }}
