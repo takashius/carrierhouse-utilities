@@ -3,12 +3,19 @@ import { useGetForm } from '@/api/proposalService';
 import Spinner from '@/components/helpers/Spinner';
 import { Box, Heading, ScrollView, Stack, Text } from 'native-base';
 import { InputForm, SelectDropdownForm } from '@/components/Form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 
 export default function TabOneScreen() {
   const responseQuery = useGetForm(160);
   const [formData, setData] = useState();
+  const [fullData, setFullData] = useState<any>();
+
+  useEffect(() => {
+    if (responseQuery.isSuccess) {
+      setFullData(responseQuery.data);
+    }
+  }, [responseQuery.isSuccess])
 
   const renderInputText = (item: any) => {
     switch (item.type) {
@@ -46,7 +53,7 @@ export default function TabOneScreen() {
                 search: false,
                 title: item.description,
                 placeholder: item.description,
-                value: item.stringValue,
+                value: item.type == 8 ? item.stringValue : item.intValue,
                 require: true,
                 formData,
                 setData
@@ -65,7 +72,7 @@ export default function TabOneScreen() {
           enabled>
           <Heading size="md" color={"purple.500"}>Mascotas</Heading>
           <ScrollView marginBottom={6}>
-            {responseQuery.data.declarations
+            {fullData?.declarations
               .sort((a: any, b: any) => a.sequence - b.sequence)
               .map((item: any) => renderInputText(item))}
           </ScrollView>
