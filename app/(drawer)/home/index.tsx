@@ -2,9 +2,10 @@ import { StyleSheet } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { Stack } from 'expo-router';
 import { useLogin } from '@/api/auth';
-import { Button } from 'native-base';
+import { Button, Icon } from 'native-base';
 import { useEffect } from 'react';
 import { write } from '@/components/helpers/LocalStorage';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TabOneScreen() {
   const responseQuery = useLogin("Erick", "Erick2023");
@@ -18,7 +19,7 @@ export default function TabOneScreen() {
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
       <Text style={styles.title}>Bienvenido a CarrierHouse</Text>
-      <Button mt={5} color={'purple.400'} bgColor={'purple.600'} onPress={() => responseQuery.refetch()}>
+      <Button leftIcon={<Icon as={Ionicons} name="reload" size="sm" />} mt={5} color={'purple.400'} bgColor={'purple.600'} onPress={() => responseQuery.refetch()}>
         Reload Token
       </Button>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />

@@ -1,30 +1,76 @@
-import { StyleSheet } from 'react-native';
-import { Text, View } from '@/components/Themed';
-import { Stack } from 'expo-router';
+import { Stack as _Stack } from 'expo-router';
+import { useGetForm } from '@/api/proposalService';
+import Spinner from '@/components/helpers/Spinner';
+import { Box, Heading, ScrollView, Stack, Text } from 'native-base';
+import { InputForm, SelectDropdownForm } from '@/components/Form';
+import { useState } from 'react';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 export default function TabOneScreen() {
-    return (
-        <View style={styles.container}>
-            <Stack.Screen options={{ headerShown: false }} />
-            <Text style={styles.title}>Mascotas</Text>
-            <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        </View>
-    );
-}
+  const responseQuery = useGetForm(160);
+  const [formData, setData] = useState();
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: '80%',
-    },
-});
+  const renderInputText = (item: any) => {
+    switch (item.type) {
+      case 1:
+      case 5:
+        if (item.visibility != 3)
+          return (
+            <Stack space={2} pb="2">
+              <InputForm
+                data={{
+                  name: item.name,
+                  title: item.description,
+                  placeholder: item.description,
+                  keyboardType: item.type == 1 ? "default" : "number-pad",
+                  value: item.type == 1 ? item.stringValue : item.intValue,
+                  formData,
+                  setData,
+                  require: !item.nullable,
+                }}
+              />
+            </Stack>
+          )
+        break;
+      case 8:
+      case 9:
+        let sortedValues = item.values.sort((p1: any, p2: any) =>
+          p1.code > p2.code ? 1 : p1.code < p2.code ? -1 : 0
+        );
+        if (item.visibility != 3)
+          return (<Stack space={2} pb="2">
+            <SelectDropdownForm
+              data={{
+                name: "master",
+                selectData: sortedValues,
+                search: false,
+                title: item.description,
+                placeholder: item.description,
+                value: item.stringValue,
+                require: true,
+                formData,
+                setData
+              }} />
+          </Stack>)
+    }
+  }
+
+  return (
+    <Box bg="white" safeArea flex="1" p="2">
+      <_Stack.Screen options={{ headerShown: false }} />
+      {responseQuery.isPending ? <Spinner /> :
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          enabled>
+          <Heading size="md" color={"purple.500"}>Mascotas</Heading>
+          <ScrollView marginBottom={6}>
+            {responseQuery.data.declarations
+              .sort((a: any, b: any) => a.sequence - b.sequence)
+              .map((item: any) => renderInputText(item))}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      }
+    </Box>
+  );
+}
