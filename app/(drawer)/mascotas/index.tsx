@@ -20,7 +20,7 @@ export default function TabOneScreen() {
   }, [responseQuery.isSuccess])
 
   const saveAction = () => {
-    alert('Guardando')
+    console.log(JSON.stringify(formData, null, 2))
   }
 
   return (

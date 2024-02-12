@@ -32,7 +32,7 @@ export default (item: any, formData: any, setData: any) => {
         return (<Stack space={2} pb="2">
           <SelectDropdownForm
             data={{
-              name: "master",
+              name: item.name,
               selectData: sortedValues,
               search: false,
               title: item.description,

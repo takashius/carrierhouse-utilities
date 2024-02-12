@@ -97,6 +97,7 @@ export const SelectDropdownForm = (dataObj: any) => {
       <SelectDropdown
         data={countries}
         onSelect={(selectedItem, index) => {
+          data.setData({ ...data.formData, [data.name]: data.selectData[index] })
         }}
         defaultButtonText={data.placeholder}
         buttonTextAfterSelection={(selectedItem, index) => {
