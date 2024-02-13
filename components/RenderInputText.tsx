@@ -5,7 +5,7 @@ export default (item: any, formData: any, setData: any) => {
   switch (item.type) {
     case 1:
     case 5:
-      if (item.visibility != 3)
+      if (item.visibility != 3) {
         return (
           <Stack space={2} pb="2">
             <InputForm
@@ -22,17 +22,20 @@ export default (item: any, formData: any, setData: any) => {
             />
           </Stack>
         )
+      }
       break;
     case 8:
     case 9:
       let sortedValues = item.values.sort((p1: any, p2: any) =>
         p1.code > p2.code ? 1 : p1.code < p2.code ? -1 : 0
       );
-      if (item.visibility != 3)
+      if (item.visibility != 3) {
         return (<Stack space={2} pb="2">
           <SelectDropdownForm
             data={{
               name: item.name,
+              id: item.id,
+              type: item.type,
               selectData: sortedValues,
               search: false,
               title: item.description,
@@ -43,5 +46,6 @@ export default (item: any, formData: any, setData: any) => {
               setData
             }} />
         </Stack>)
+      }
   }
 }

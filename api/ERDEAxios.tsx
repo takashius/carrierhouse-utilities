@@ -20,7 +20,7 @@ ERDEAxios.interceptors.request.use(
     config.url = urlJoin(apiUrl, `${config.url}`);
     if (DEBUG) {
       console.log("URL", config.method, config.url);
-      config.data && console.log("DATA", config.data);
+      config.data && console.log("DATA", JSON.stringify(config.data));
     }
     return config;
   },

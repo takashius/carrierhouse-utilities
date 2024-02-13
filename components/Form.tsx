@@ -7,6 +7,7 @@ import {
   WarningOutlineIcon,
   Box,
 } from "native-base";
+import { useEffect } from "react";
 import { Platform, TouchableWithoutFeedback, StyleSheet } from "react-native";
 import SelectDropdown from 'react-native-select-dropdown';
 
@@ -80,7 +81,15 @@ export const InputDate = ({ data }: { data: any }) => {
 
 export const SelectDropdownForm = (dataObj: any) => {
   const { data } = dataObj;
-  const countries = data.selectData.map((item: any) => item.description)
+  const countries = data.selectData.map((item: any) => item.description);
+
+  useEffect(() => {
+    const item = {
+      id: data.id,
+      value: data.value
+    }
+    data.setData({ ...data.formData, [data.name]: item });
+  }, [])
   return (
     <FormControl
       w={data.col === true ? "1/2" : "full"}
@@ -96,8 +105,13 @@ export const SelectDropdownForm = (dataObj: any) => {
       </FormControl.Label>
       <SelectDropdown
         data={countries}
+        defaultValue={data.value}
         onSelect={(selectedItem, index) => {
-          data.setData({ ...data.formData, [data.name]: data.selectData[index] })
+          const item = {
+            id: data.id,
+            value: data.type === 9 ? data.selectData[index].code : data.selectData[index].name
+          }
+          data.setData({ ...data.formData, [data.name]: item })
         }}
         defaultButtonText={data.placeholder}
         buttonTextAfterSelection={(selectedItem, index) => {

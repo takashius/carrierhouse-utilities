@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import ERDEAxios from "./ERDEAxios";
 
 export const useGetForm = (productCode: Number) => {
@@ -17,4 +17,14 @@ export const useGetForm = (productCode: Number) => {
     },
   });
   return query;
+};
+
+export const useSetForm = () => {
+  const mutation = useMutation({
+    mutationFn: (data: any) => {
+      return ERDEAxios.post("/proposalservice/commitproposal", data);
+    },
+  });
+
+  return mutation;
 };

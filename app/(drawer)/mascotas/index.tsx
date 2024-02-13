@@ -1,5 +1,5 @@
 import { Stack as _Stack, useNavigation } from 'expo-router';
-import { useGetForm } from '@/api/proposalService';
+import { useGetForm, useSetForm } from '@/api/proposalService';
 import Spinner from '@/components/helpers/Spinner';
 import { Box, Heading, ScrollView } from 'native-base';
 import { useEffect, useState } from 'react';
@@ -10,8 +10,27 @@ import { useOptions } from '@/components/helpers/OptionsScreens';
 export default function TabOneScreen() {
   const navigation = useNavigation();
   const responseQuery = useGetForm(160);
-  const [formData, setData] = useState();
+  const formMutation = useSetForm();
+  const [formData, setData] = useState<any>({});
   const [fullData, setFullData] = useState<any>();
+
+  const setDataInJson = (data: any) => {
+    for (var i = 0; i < fullData.declarations.length; i++) {
+      if (fullData.declarations[i].id == data.id) {
+        switch (fullData.declarations[i].type) {
+          case 1:
+          case 8:
+            fullData.declarations[i].stringValue = data.value;
+            break;
+          case 5:
+          case 9:
+          case 18:
+            fullData.declarations[i].intValue = parseInt(data.value);
+            break;
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     if (responseQuery.isSuccess) {
@@ -19,8 +38,19 @@ export default function TabOneScreen() {
     }
   }, [responseQuery.isSuccess])
 
+  useEffect(() => {
+    if (formMutation.isSuccess) {
+      setFullData(formMutation.data);
+    }
+  }, [formMutation.isSuccess])
+
   const saveAction = () => {
-    console.log(JSON.stringify(formData, null, 2))
+    let keys = Object.keys(formData);
+    for (let i = 0; i < keys.length; i++) {
+      let key = keys[i];
+      setDataInJson(formData[key]);
+    }
+    formMutation.mutate(fullData);
   }
 
   return (
@@ -31,7 +61,7 @@ export default function TabOneScreen() {
         save: true,
         saveAction
       })} />
-      {responseQuery.isPending ? <Spinner /> :
+      {responseQuery.isPending || formMutation.isPending ? <Spinner /> :
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
