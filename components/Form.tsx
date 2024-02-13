@@ -81,7 +81,21 @@ export const InputDate = ({ data }: { data: any }) => {
 
 export const SelectDropdownForm = (dataObj: any) => {
   const { data } = dataObj;
+  // console.log(JSON.stringify(data.selectData, null, 2))
   const countries = data.selectData.map((item: any) => item.description);
+
+  const result = data.selectData.filter((item: any) => {
+    if (item.name) {
+      return item.name == data.value;
+    }
+    if (item.code) {
+      return item.code == data.value;
+    }
+  })[0];
+  if (!result) {
+    console.log(data.value)
+  }
+  // console.log(result)
 
   useEffect(() => {
     const item = {
@@ -105,7 +119,6 @@ export const SelectDropdownForm = (dataObj: any) => {
       </FormControl.Label>
       <SelectDropdown
         data={countries}
-        defaultValue={data.value}
         onSelect={(selectedItem, index) => {
           const item = {
             id: data.id,
@@ -113,7 +126,7 @@ export const SelectDropdownForm = (dataObj: any) => {
           }
           data.setData({ ...data.formData, [data.name]: item })
         }}
-        defaultButtonText={data.placeholder}
+        defaultButtonText={result?.description ? result.description : data.placeholder}
         buttonTextAfterSelection={(selectedItem, index) => {
           return selectedItem;
         }}
@@ -121,14 +134,15 @@ export const SelectDropdownForm = (dataObj: any) => {
           return item;
         }}
         {...(data.search && { search: true })}
+        {...(data.disabled && { disabled: true })}
         searchInputStyle={styles.dropdown1searchInputStyleStyle}
         searchPlaceHolder={t('filter')}
         searchPlaceHolderColor={'darkgrey'}
         renderSearchInputLeftIcon={() => {
           return <FontAwesome name={'search'} color={'darkgrey'} size={18} />;
         }}
-        buttonStyle={styles.dropdown1BtnStyle}
-        buttonTextStyle={styles.dropdown1BtnTxtStyle}
+        buttonStyle={[styles.dropdown1BtnStyle, data.disabled && { backgroundColor: 'darkgrey' }]}
+        buttonTextStyle={[styles.dropdown1BtnTxtStyle, data.disabled && { color: '#EFEFEF' }]}
         renderDropdownIcon={isOpened => {
           return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'darkgrey'} size={12} />;
         }}
