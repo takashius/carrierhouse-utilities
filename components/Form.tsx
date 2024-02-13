@@ -81,7 +81,6 @@ export const InputDate = ({ data }: { data: any }) => {
 
 export const SelectDropdownForm = (dataObj: any) => {
   const { data } = dataObj;
-  // console.log(JSON.stringify(data.selectData, null, 2))
   const countries = data.selectData.map((item: any) => item.description);
 
   const result = data.selectData.filter((item: any) => {
