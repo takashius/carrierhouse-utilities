@@ -92,10 +92,6 @@ export const SelectDropdownForm = (dataObj: any) => {
       return item.code == data.value;
     }
   })[0];
-  if (!result) {
-    console.log(data.value)
-  }
-  // console.log(result)
 
   useEffect(() => {
     const item = {
