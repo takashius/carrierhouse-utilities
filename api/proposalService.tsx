@@ -20,7 +20,7 @@ export const useGetForm = (productCode: Number) => {
 };
 
 export const useSetForm = () => {
-  const mutation = useMutation({
+  const mutation = useMutation<any>({
     mutationFn: (data: any) => {
       return ERDEAxios.post("/proposalservice/commitproposal", data);
     },

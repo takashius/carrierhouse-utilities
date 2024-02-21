@@ -11,6 +11,7 @@ export default (item: any, formData: any, setData: any) => {
             <InputForm
               data={{
                 name: item.name,
+                id: item.id,
                 title: item.description,
                 placeholder: item.description,
                 keyboardType: item.type == 1 ? "default" : "number-pad",

@@ -33,7 +33,9 @@ export const InputForm = ({ data }: { data: any }) => {
         {...(data.readonly && { value: data.value })}
         {...(data.keyboardType && { keyboardType: data.keyboardType })}
         onChangeText={(value) =>
-          data.setData({ ...data.formData, [data.name]: value })
+          data.setData({
+            ...data.formData, [data.name]: { id: data.id, value }
+          })
         }
       />
     </FormControl>

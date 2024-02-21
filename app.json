@@ -2,6 +2,7 @@
   "expo": {
     "name": "carrierhouse-utilities",
     "slug": "carrierhouse-utilities",
+    "owner": "erickhernandez",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -34,6 +35,20 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "c88d3b33-8406-45d6-9999-8ed8a34ca853"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/c88d3b33-8406-45d6-9999-8ed8a34ca853"
     }
   }
 }
