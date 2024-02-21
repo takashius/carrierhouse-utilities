@@ -17,6 +17,7 @@ export const InputForm = ({ data }: { data: any }) => {
       w={data.col === true ? "1/2" : "full"}
       px={data.col === true ? "2" : 0}
       {...(data.require && { isRequired: true })}
+      isInvalid={`${data.name}` in data.errors}
     >
       <FormControl.Label
         _text={{
@@ -34,10 +35,15 @@ export const InputForm = ({ data }: { data: any }) => {
         {...(data.keyboardType && { keyboardType: data.keyboardType })}
         onChangeText={(value) =>
           data.setData({
-            ...data.formData, [data.name]: { id: data.id, value }
+            ...data.formData, [data.name]: { id: data.id, value, groupInput: data.groupInput ? data.groupInput : undefined }
           })
         }
       />
+      {`${data.name}` in data.errors && (
+        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+          {data.errors[data.name]}
+        </FormControl.ErrorMessage>
+      )}
     </FormControl>
   );
 };
@@ -95,9 +101,12 @@ export const SelectDropdownForm = (dataObj: any) => {
   })[0];
 
   useEffect(() => {
-    const item = {
+    const item: any = {
       id: data.id,
       value: data.value
+    }
+    if (data.groupInput) {
+      item.groupInput = data.groupInput;
     }
     data.setData({ ...data.formData, [data.name]: item });
   }, [])
@@ -106,6 +115,7 @@ export const SelectDropdownForm = (dataObj: any) => {
       w={data.col === true ? "1/2" : "full"}
       px={data.col === true ? "2" : 0}
       {...(data.require && { isRequired: true })}
+      isInvalid={`${data.name}` in data.errors}
     >
       <FormControl.Label
         _text={{
@@ -148,6 +158,11 @@ export const SelectDropdownForm = (dataObj: any) => {
         rowStyle={styles.dropdown1RowStyle}
         rowTextStyle={styles.dropdown1RowTxtStyle}
       />
+      {`${data.name}` in data.errors && (
+        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+          {data.errors[data.name]}
+        </FormControl.ErrorMessage>
+      )}
     </FormControl>
   )
 };

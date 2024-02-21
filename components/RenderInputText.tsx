@@ -1,7 +1,7 @@
 import { Stack } from "native-base";
 import { InputForm, SelectDropdownForm } from "./Form";
 
-export default (item: any, formData: any, setData: any) => {
+export default (item: any, formData: any, setData: any, errors: any, groupInput?: string) => {
   switch (item.type) {
     case 1:
     case 5:
@@ -19,6 +19,8 @@ export default (item: any, formData: any, setData: any) => {
                 formData,
                 setData,
                 require: !item.nullable,
+                errors,
+                groupInput
               }}
             />
           </Stack>
@@ -43,9 +45,11 @@ export default (item: any, formData: any, setData: any) => {
               title: item.description,
               placeholder: item.description,
               value: item.type == 8 ? item.stringValue : item.intValue,
-              require: true,
+              require: !item.nullable,
               formData,
-              setData
+              setData,
+              errors,
+              groupInput
             }} />
         </Stack>)
       }

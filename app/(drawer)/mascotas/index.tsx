@@ -17,8 +17,10 @@ export default function TabOneScreen() {
   const [showError, setShowError] = useState<Boolean>(false);
   const [thirdSection, setThirdSection] = useState<Boolean>(false);
   const [formData, setData] = useState<any>({});
+  const [required, setRequired] = useState<any>({});
   const [fullData, setFullData] = useState<any>();
   const [thirdData, setThirdData] = useState<any>();
+  const [errors, setErrors] = useState<any>({});
 
   const setDataInJson = (data: any) => {
     for (var i = 0; i < fullData.declarations.length; i++) {
@@ -81,14 +83,95 @@ export default function TabOneScreen() {
     }
   }, [formMutation.isSuccess])
 
-  const saveAction = () => {
+  const validate = () => {
+    let keys = Object.keys(required);
+    for (let i = 0; i < keys.length; i++) {
+      if (required[keys[i]] === '' || required[keys[i]] === undefined) {
+        if (formData[keys[i]] === undefined) {
+          setErrors({
+            ...errors,
+            [keys[i]]: 'Campo requerido'
+          });
+          return false;
+        } else {
+          delete errors[keys[i]];
+        }
+      } else {
+        delete errors[keys[i]];
+      }
+    }
+    return true;
+  }
+
+  const formatThirdData = () => {
+    const dataParty: any = {
+      status: 0,
+      gender: 2,
+      taxstype: 1,
+      birthday: "2023/11/14",
+      relationship: 8,
+      names: [],
+      thpdecls: [],
+      certs: [],
+    };
     let keys = Object.keys(formData);
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
-
-      setDataInJson(formData[key]);
+      switch (formData[key].groupInput) {
+        case 'partyName':
+          dataParty.names.push({
+            code: formData[key].id,
+            description: formData[key].value.toUpperCase(),
+          });
+          break;
+        case 'partyCert':
+          dataParty.certs.push({
+            code: formData[key].id,
+            description: formData[key].value.toUpperCase(),
+          });
+          break;
+        case 'partyDeclaration':
+          dataParty.thpdecls.push({
+            code: formData[key].id,
+            description: formData[key].value.toUpperCase(),
+          });
+          break;
+      }
     }
-    formMutation.mutate(fullData);
+    return dataParty;
+  }
+
+  const saveAction = () => {
+    if (validate()) {
+      let keys = Object.keys(formData);
+      for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+
+        setDataInJson(formData[key]);
+      }
+      if (thirdSection) {
+        formatThirdData();
+      } else {
+        formMutation.mutate(fullData);
+      }
+      setRequired({});
+      setData({});
+    }
+  }
+
+  const requiredDefault = (item: any) => {
+    if (!item.nullable && item.visibility != 3) {
+      switch (item.type) {
+        case 1:
+        case 5:
+          required[item.name] = item.type == 1 ? item.stringValue : item.intValue;
+          break;
+        case 8:
+        case 9:
+          required[item.name] = item.type == 8 ? item.stringValue : item.intValue;
+          break;
+      }
+    }
   }
 
   const renderThird = () => {
@@ -101,12 +184,12 @@ export default function TabOneScreen() {
       id: 10,
       type: 1,
     };
+    requiredDefault(docId);
     return (
       <>
         {thirdData?.nameStructure
           .sort((a: any, b: any) => a.sequence - b.sequence)
           .map((item: any) => {
-            console.log('nameStructure', item)
             const structure = {
               defaultValue: "",
               visibility: 1,
@@ -116,9 +199,10 @@ export default function TabOneScreen() {
               id: item.code,
               type: 1
             };
-            return RenderInputText(structure, formData, setData);
+            requiredDefault(structure);
+            return RenderInputText(structure, formData, setData, errors, 'partyName');
           })}
-        {RenderInputText(docId, formData, setData)}
+        {RenderInputText(docId, formData, setData, errors, 'partyCert')}
         {thirdData?.declarations
           .sort((a: any, b: any) => a.sequence - b.sequence)
           .map((item: any) => {
@@ -131,7 +215,8 @@ export default function TabOneScreen() {
               id: item.code,
               type: 1
             };
-            return RenderInputText(structure, formData, setData);
+            requiredDefault(structure);
+            return RenderInputText(structure, formData, setData, errors, 'partyDeclaration');
           })}
       </>
     )
@@ -157,7 +242,10 @@ export default function TabOneScreen() {
               :
               fullData?.declarations
                 .sort((a: any, b: any) => a.sequence - b.sequence)
-                .map((item: any) => RenderInputText(item, formData, setData))
+                .map((item: any) => {
+                  requiredDefault(item);
+                  return (RenderInputText(item, formData, setData, errors))
+                })
             }
           </ScrollView>
         </KeyboardAvoidingView>
