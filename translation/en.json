@@ -1,3 +1,17 @@
 {
-    "appName": "CarrierHouse"
+    "appName": "CarrierHouse",
+    "welcome": "Welcome",
+    "register": "Sing In",
+    "name": "Name",
+    "docId": "Document ID",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "repeatPassword": "Confirm password",
+    "signUp": "SignUp",
+    "auth": {
+        "logout": "Logout",
+        "newUser": "New User",
+        "required": "The field is required"
+    }
 }

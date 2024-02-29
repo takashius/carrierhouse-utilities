@@ -72,6 +72,7 @@ function RootLayoutNav() {
         <I18nextProvider i18n={i18next}>
           <QueryClientProvider client={queryClient}>
             <Stack>
+              <Stack.Screen name="login" options={{ headerShown: false }} />
               <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
             </Stack>
           </QueryClientProvider>

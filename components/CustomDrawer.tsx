@@ -28,6 +28,21 @@ const CustomDrawer = (props: any) => {
         <View
           style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}
         >
+          <DrawerItem
+            icon={({ focused, color, size }) => (
+              <Icon
+                as={<MaterialIcons name="arrow-back" />}
+                size={6}
+                color={"white"}
+              />
+            )}
+            activeTintColor="white"
+            inactiveTintColor="white"
+            label={t("auth.logout")}
+            onPress={() => {
+              router.replace("/login");
+            }}
+          />
         </View>
       </ImageBackground>
     </Box>

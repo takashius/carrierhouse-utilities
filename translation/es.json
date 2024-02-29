@@ -1,3 +1,17 @@
 {
-    "appName": "CarrierHouse"
+    "appName": "CarrierHouse",
+    "register": "Registrarse",
+    "welcome": "Bienvenid@",
+    "name": "Nombre",
+    "docId": "Cédula de Ciudadanía",
+    "email": "Correo Electronico",
+    "phone": "Teléfono",
+    "password": "Contraseña",
+    "repeatPassword": "Repetir contraseña",
+    "signUp": "Registrar",
+    "auth": {
+        "logout": "Salir",
+        "newUser": "Nuevo Usuario",
+        "required": "El campo es obligatorio"
+    }
 }
