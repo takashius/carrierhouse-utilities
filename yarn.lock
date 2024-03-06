@@ -3167,6 +3167,11 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
+"@stripe/stripe-react-native@~0.35.1":
+  version "0.35.1"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-react-native/-/stripe-react-native-0.35.1.tgz#096e15179d50c3d7d0877112724a53107c5fc7ba"
+  integrity sha512-F6sewQYO0/wS1LDsjH9mE6qvyhfU3BAfz81oBSzntH8HdGon/TablGYsGTXrpmok+c4qzbXCQcPmVOdisZMQ0A==
+
 "@swc/helpers@^0.5.0":
   version "0.5.6"
   resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.5.6.tgz#d16d8566b7aea2bef90d059757e2d77f48224160"

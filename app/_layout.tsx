@@ -1,5 +1,6 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { StripeProvider } from '@stripe/stripe-react-native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -65,19 +66,25 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const queryClient = new QueryClient();
+  const publishableKey = 'sk_test_51O6iJbEJTuZo0QvRkmgDBoMPqIEe4aKCwpbKIIhFFvnYCydxV0lJgqRb6E5U1kMhVk0tVuSTJxM4q25glbvlDGaU00ASufklzW';
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <NativeBaseProvider>
-        <I18nextProvider i18n={i18next}>
-          <QueryClientProvider client={queryClient}>
-            <Stack>
-              <Stack.Screen name="login" options={{ headerShown: false }} />
-              <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-            </Stack>
-          </QueryClientProvider>
-        </I18nextProvider>
-      </NativeBaseProvider>
+      <StripeProvider
+        publishableKey={publishableKey}
+        urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+      >
+        <NativeBaseProvider>
+          <I18nextProvider i18n={i18next}>
+            <QueryClientProvider client={queryClient}>
+              <Stack>
+                <Stack.Screen name="login" options={{ headerShown: false }} />
+                <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+              </Stack>
+            </QueryClientProvider>
+          </I18nextProvider>
+        </NativeBaseProvider>
+      </StripeProvider>
     </ThemeProvider>
   );
 }
