@@ -1,12 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { Text, View } from '@/components/Themed';
-import { Stack } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerShown: false }} />
       <Text style={styles.title}>Bienvenido a CarrierHouse</Text>
+      <Link href={'/paypalScreen'}>
+        <Text>Paypal</Text>
+      </Link>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </View>
   );

@@ -22,6 +22,7 @@
     "expo-font": "~11.10.2",
     "expo-linking": "~6.2.2",
     "expo-localization": "~14.8.3",
+    "expo-paypal": "^1.4.1",
     "expo-router": "~3.4.7",
     "expo-secure-store": "^12.8.1",
     "expo-splash-screen": "~0.26.4",
@@ -42,6 +43,7 @@
     "react-native-select-dropdown": "^3.4.0",
     "react-native-svg": "^14.1.0",
     "react-native-web": "~0.19.6",
+    "react-native-webview": "^13.8.1",
     "url-join": "^5.0.0"
   },
   "devDependencies": {
